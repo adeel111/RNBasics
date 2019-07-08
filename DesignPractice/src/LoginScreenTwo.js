@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Dimensions, Image, TextInput, TouchableOpacity } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const { SCREEN_HEIGHT, SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -13,8 +14,8 @@ export class LoginScreenTwo extends Component {
     render() {
         return (
             <View style={styles.container}>
-                
-                <View style={{position: 'absolute', zIndex: 5, justifyContent: 'center',flexDirection: 'row', margin: '50%', marginTop: '5.5%' }}>
+
+                <View style={{ position: 'absolute', zIndex: 5, justifyContent: 'center', flexDirection: 'row', margin: '50%', marginTop: '5.5%' }}>
                     <Image // 
                         style={{ height: 100, width: 100, }}
                         source={require('./assets/icon.png')} />
@@ -41,8 +42,17 @@ export class LoginScreenTwo extends Component {
                         autoCapitalize="none"
                         secureTextEntry
                         onChangeText={this.handleEmail} />
-                    <TouchableOpacity style={{ backgroundColor: '#FF7043', margin: 15, padding: 15, borderRadius: 20, }}>
-                        <Text style={{ fontSize: 18, fontWeight: 'bold', alignSelf: 'center' }}>Sign In</Text>
+
+                    <TouchableOpacity >
+                        <LinearGradient
+                            // To set orientation of Gradient (left to right or top to bottom etc)... 
+                            // start={{ x: 0.0, y: 0.25 }} end={{ x: 0.5, y: 1.0 }}
+                            // locations={[0, 0.5, 0.6]}
+                            colors={['#f76b1c', '#f76b1c']} style={{ margin: 15, padding: 15, borderRadius: 20, }}>
+
+                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', alignSelf: 'center' }}>Sign In</Text>
+
+                        </LinearGradient>
                     </TouchableOpacity>
 
                     <Text style={{ fontSize: 16, fontWeight: 'bold', alignSelf: 'center', margin: 15, }}>Forgot your password?</Text>
@@ -68,9 +78,12 @@ export class LoginScreenTwo extends Component {
                     />
                 </View>
 
-                <TouchableOpacity style={{ backgroundColor: 'white', margin: 30, marginTop: 15, padding: 15, borderRadius: 20, }}>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', alignSelf: 'center' }}>Sign Up Today ></Text>
-                </TouchableOpacity>
+                <View>
+                    <TouchableOpacity style={{ backgroundColor: 'white', margin: 30, marginTop: 15, padding: 15, borderRadius: 20, }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', alignSelf: 'center' }}>Sign Up Today ></Text>
+                    </TouchableOpacity>
+                </View>
+
             </View>
 
         );
@@ -81,7 +94,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#1976D2',
-        // margiBottom: 30, 
     },
     inputOne: {
         margin: 15,

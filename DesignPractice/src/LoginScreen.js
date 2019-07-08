@@ -41,8 +41,8 @@ export class LoginScreen extends Component {
                         secureTextEntry
                         autoCapitalize="none"
                         onChangeText={this.handleEmail} />
-                    <TouchableOpacity style={{ backgroundColor: '#F57C00', margin: 15, padding: 15, borderRadius: 20, }}>
-                        <Text style={{ fontSize: 18, fontWeight: 'bold', alignSelf: 'center' }}>Sign In</Text>
+                    <TouchableOpacity style={{ backgroundColor: '#f76b1c', margin: 15, padding: 15, borderRadius: 20, }}>
+                        <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', alignSelf: 'center' }}>Sign In</Text>
                     </TouchableOpacity>
 
                     <Text style={{ fontSize: 16, fontWeight: 'bold', alignSelf: 'center', margin: 15, }}>Forgot your password?</Text>
