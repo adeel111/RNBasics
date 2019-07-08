@@ -1,0 +1,3 @@
+rootProject.name = 'DesignPractice'
+
+include ':app'
