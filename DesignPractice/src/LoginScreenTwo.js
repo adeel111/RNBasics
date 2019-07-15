@@ -16,7 +16,7 @@ export class LoginScreenTwo extends Component {
             <View style={styles.container}>
 
                 <View style={{ position: 'absolute', zIndex: 5, justifyContent: 'center', flexDirection: 'row', margin: '50%', marginTop: '5.5%' }}>
-                    <Image // 
+                    <Image 
                         style={{ height: 100, width: 100, }}
                         source={require('./assets/icon.png')} />
                 </View>
