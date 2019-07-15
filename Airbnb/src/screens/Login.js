@@ -3,8 +3,14 @@ import { StyleSheet, View, Text, ScrollView, KeyboardAvoidingView } from 'react-
 import PropTypes from 'prop-types';
 import colors from '../styles/colors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import InputField from '../components/form/InputField';
+import NextArrowButton from '../components/buttons/NextArrowButton';
 
 export default class Login extends Component {
+
+  handleNextButton() {
+    alert('Next button pressed')
+  }
 
   render() {
     return (
@@ -12,8 +18,30 @@ export default class Login extends Component {
         <View style = {styles.scrollViewWrapper}>
             <ScrollView style = {styles.scrollView}>
                 <Text style = {styles.loginHeader}>Log In</Text>
+                <InputField
+                labelText = "EMAIL ADDRESS"
+                labelTextSize = {14}
+                labelColor = {colors.white}
+                textColor = {colors.white}
+                borderBottomColor = {colors.white}
+                inputType = 'email'
+                customStyle = {{marginBottom: 30}}
+                />
+                <InputField
+                labelText = "PASSWORD"
+                labelTextSize = {14}
+                labelColor = {colors.white}
+                textColor = {colors.white}
+                borderBottomColor = {colors.white}
+                inputType = 'password'
+                customStyle = {{marginBottom: 30}}
+                />
             </ScrollView>
         </View>
+        <View style = {styles.nextButton}>
+              <NextArrowButton 
+              handleNextButton = {this.handleNextButton} />
+            </View>
       </KeyboardAvoidingView>
     );
   }
@@ -40,5 +68,10 @@ const styles = StyleSheet.create({
         color: colors.white,
         fontWeight: '300',
         marginBottom: 40,
-    }
+    },
+    nextButton: {
+      alignItems: 'flex-end',
+      right: 20,
+      bottom: 20,
+    },
 });
