@@ -16,7 +16,7 @@ export default class RoundedButton extends Component {
       const color = textColor || colors.black
     return (
       <View>
-          <TouchableOpacity style = {[{backgroundColor: background}, styles.wrapper]}
+          <TouchableOpacity style = {[{backgroundColor: backgroundColor}, styles.wrapper]}
           onPress = {handleOnPress}>
               <View style = {styles.buttonTextWrapper}>
                   {icon}
@@ -28,7 +28,7 @@ export default class RoundedButton extends Component {
   }
 }
 
- RoundedButton.propTypes = {
+ RoundedButton.PropTypes = {
      text: PropTypes.string.isRequired,
      textColor: PropTypes.string,
      background: PropTypes.string,
