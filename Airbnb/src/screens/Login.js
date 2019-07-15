@@ -40,7 +40,8 @@ export default class Login extends Component {
         </View>
         <View style = {styles.nextButton}>
               <NextArrowButton 
-              handleNextButton = {this.handleNextButton} />
+                handleNextButton = {this.handleNextButton} 
+              />
             </View>
       </KeyboardAvoidingView>
     );
