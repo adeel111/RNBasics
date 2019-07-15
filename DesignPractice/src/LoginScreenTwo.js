@@ -16,7 +16,7 @@ export class LoginScreenTwo extends Component {
             <View style={styles.container}>
 
                 <View style={{ position: 'absolute', zIndex: 5, justifyContent: 'center', flexDirection: 'row', margin: '50%', marginTop: '5.5%' }}>
-                    <Image 
+                    <Image
                         style={{ height: 100, width: 100, }}
                         source={require('./assets/icon.png')} />
                 </View>
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#1976D2',
     },
+    
     inputOne: {
         margin: 15,
         marginTop: 50,
@@ -105,6 +106,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingLeft: 9,
     },
+
     inputTwo: {
         margin: 15,
         height: 50,
