@@ -13,14 +13,14 @@ import colors from "../styles/colors";
 
 class Notification extends Component {
   state = {
-    positionValue: new Animated.Value(60)
+    positionValue: new Animated.Value(-60)
   };
 
   animatedNotification = value => {
     const { positionValue } = this.state;
     Animated.timing(positionValue, {
       toValue: value,
-      duration: 400,
+      duration: 300,
       velocity: 3,
       tension: 2,
       friction: 8,
@@ -41,13 +41,11 @@ class Notification extends Component {
     } = this.props;
     showNotification
       ? this.animatedNotification(0)
-      : this.animatedNotification(60);
+      : this.animatedNotification(-60);
     const { positionValue } = this.state;
 
     return (
-      <Animated.View
-        style={[{ transform: [{ translateY: positionValue }] }, styles.wrapper]}
-      >
+      <Animated.View style={[{ marginBottom: positionValue }, styles.wrapper]}>
         <View style={styles.notificationContent}>
           <Text style={styles.errorText}> {type} </Text>
           <Text style={styles.errorMessage}> {firstLine} </Text>

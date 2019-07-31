@@ -10,24 +10,28 @@ import colors from "../styles/colors";
 import InputField from "../components/form/InputField";
 import NextArrowButton from "../components/buttons/NextArrowButton";
 import Notification from "../components/Notification";
+import Loader from "../components/Loader";
 
 export default class Login extends Component {
   state = {
     formValid: true,
     validEmail: false,
     emailAddress: "",
-    validPassword: false
+    validPassword: false,
+    loadingVisible: false
   };
   handleNextButton = () => {
-    if (
-      this.state.emailAddress === "Aydil@gmail.com" &&
-      this.state.validPassword
-    ) {
-      alert("Success");
-      this.setState({ formValid: true });
-    } else {
-      this.setState({ formValid: false });
-    }
+    this.setState({ loadingVisible: true });
+    setTimeout(() => {
+      if (
+        this.state.emailAddress === "Aydil@gmail.com" &&
+        this.state.validPassword
+      ) {
+        this.setState({ formValid: true, loadingVisible: false });
+      } else {
+        this.setState({ formValid: false, loadingVisible: false });
+      }
+    }, 2000);
   };
 
   handleCloseNotification = () => {
@@ -69,7 +73,7 @@ export default class Login extends Component {
   };
 
   render() {
-    const { formValid } = this.state;
+    const { formValid, loadingVisible, validEmail, validPassword } = this.state;
     const showNotification = formValid ? false : true;
     const background = formValid ? colors.green01 : colors.darkOrange;
     const notificationMarginTop = showNotification ? 10 : 0;
@@ -89,6 +93,8 @@ export default class Login extends Component {
               inputType="email"
               customStyle={{ marginBottom: 30 }}
               onChangeText={this.handleEmailchange}
+              showCheckmark={validEmail}
+              autoFocus={true}
             />
             <InputField
               labelText="PASSWORD"
@@ -99,6 +105,7 @@ export default class Login extends Component {
               inputType="password"
               customStyle={{ marginBottom: 30 }}
               onChangeText={this.handlePasswordChange}
+              showCheckmark={validPassword}
             />
           </ScrollView>
         </View>
@@ -122,6 +129,7 @@ export default class Login extends Component {
             secondLine="Plz try again."
           />
         </View>
+        <Loader modalVisible={loadingVisible} animationType="fade" />
       </KeyboardAvoidingView>
     );
   }
