@@ -1,22 +1,17 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image } from "react-native";
 
-class RenderImage extends Component {
-  render() {
-    const { large } = props.item.picture;
-    return (
-      <View style={styles.flatListItemContainer}>
-        <Image
-          style={styles.imageStyle}
-          resizeMode="cover"
-          source={{ uri: large }}
-        />
-      </View>
-    );
-  }
-}
-
-export default RenderImage;
+export default RenderImage = ({item}) => {
+  return (
+    <View style={styles.flatListItemContainer}>
+      <Image
+        style={styles.imageStyle}
+        resizeMode="cover"
+        source={{ uri: item.picture.large }}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   flatListItemContainer: {
@@ -24,7 +19,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 10,
-    backgroundColor: "pink"
+    backgroundColor: "gray"
   },
   imageStyle: {
     width: 150,

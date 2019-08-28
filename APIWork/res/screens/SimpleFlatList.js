@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, FlatList, Image } from "react-native";
 import Loading from "../components/Loading";
 import API from "../components/AxiosAPI";
+import RenderImage from '../components/RenderImage';
+import RenderText from '../components/RenderText';
 
 class SimpleFlatList extends Component {
   state = {
@@ -13,14 +15,18 @@ class SimpleFlatList extends Component {
 
   componentDidMount = () => {
     this.getImage();
-    this.getTextualData();
+  };
+  
+  toggleLoading = () => {
+    this.setState({ loading: !this.state.loading });
   };
 
   getImage = () => {
     API.get(`https://randomuser.me/api/`)
       .then(res => {
         const data = res.data;
-        this.setState({ personsImage: data.results, loading: false });
+        this.setState({ personsImage: data.results });
+        this.getTextualData();
       })
       .catch(err => {
         this.toggleLoading();
@@ -32,7 +38,7 @@ class SimpleFlatList extends Component {
     API.get(`users/`)
       .then(res => {
         const data = res.data;
-        this.setState({ personsData: data, loading: false });
+        this.setState({ personsData: data, loading: false});
       })
       .catch(err => {
         this.toggleLoading();
@@ -40,43 +46,39 @@ class SimpleFlatList extends Component {
       });
   };
 
-  toggleLoading = () => {
-    this.setState({ loading: !this.state.loading });
-  };
-
   // this is the way to get and render data from
   // JSON Arrays & Objects through AxiosAPI...
 
-  renderImages = props => {
-    const { large } = props.item.picture;
-    return (
-      <View style={styles.flatListItemContainer}>
-        <Image
-          style={styles.imageStyle}
-          resizeMode="cover"
-          source={{ uri: large }}
-        />
-      </View>
-    );
-  };
+  // renderImages = props => {
+  //   const { large } = props.item.picture;
+  //   return (
+  //     <View style={styles.flatListItemContainer}>
+  //       <Image
+  //         style={styles.imageStyle}
+  //         resizeMode="cover"
+  //         source={{ uri: large }}
+  //       />
+  //     </View>
+  //   );
+  // };
 
-  renderItem = props => {
-    const { name, email } = props.item;
-    const { street, city } = props.item.address;
-    const { lat, lng } = props.item.address.geo;
-    return (
-      <View style={styles.flatListItemContainer}>
-        <Text style={styles.textStyle}>Name : {name}</Text>
-        <Text style={styles.textStyle}>Email : {email}</Text>
-        <Text style={styles.textStyle}>
-          Address : {street}, {city}
-        </Text>
-        <Text style={styles.textStyle}>
-          Location : {lat}, {lng}
-        </Text>
-      </View>
-    );
-  };
+  // renderText = props => {
+  //   const { name, email } = props.item;
+  //   const { street, city } = props.item.address;
+  //   const { lat, lng } = props.item.address.geo;
+  //   return (
+  //     <View style={styles.flatListItemContainer}>
+  //       <Text style={styles.textStyle}>Name : {name}</Text>
+  //       <Text style={styles.textStyle}>Email : {email}</Text>
+  //       <Text style={styles.textStyle}>
+  //         Address : {street}, {city}
+  //       </Text>
+  //       <Text style={styles.textStyle}>
+  //         Location : {lat}, {lng}
+  //       </Text>
+  //     </View>
+  //   );
+  // };
 
   render() {
     return (
@@ -89,7 +91,8 @@ class SimpleFlatList extends Component {
               <FlatList
                 data={this.state.personsImage}
                 keyExtractor={(item, index) => item.id.toString()}
-                renderItem={this.renderImages}
+                // renderItem= {this.renderImage}
+                renderItem= {({ item }) => <RenderImage item={item} />}
                 showsVerticalScrollIndicator={false}
               />
             </View>
@@ -97,7 +100,8 @@ class SimpleFlatList extends Component {
               <FlatList
                 data={this.state.personsData}
                 keyExtractor={(item, index) => item.id.toString()}
-                renderItem={this.renderItem}
+                // renderItem= {this.renderText}
+                renderItem= {({ item }) => <RenderText item={item} />}
                 showsVerticalScrollIndicator={false}
               />
             </View>
