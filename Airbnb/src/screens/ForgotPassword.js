@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
 import colors from "../styles/colors";
 import InputField from "../components/form/InputField";
 import Notification from "../components/Notification";
@@ -62,39 +62,39 @@ class ForgotPassword extends Component {
         style={[{ backgroundColor: background }, styles.wrapper]}
         behavior="padding"
       >
-        <View style={styles.form}>
-          <Text style={styles.forgotPasswordHeading}>
-            Forgot your password?
-          </Text>
-          <Text style={styles.forgotPasswordSubHeading}>
-            Enter your email to find your account
-          </Text>
-          <InputField
-            customStyle={{ marginBottom: 30 }}
-            textColor={colors.white}
-            labelText="EMAIL_ADDRRESS"
-            labelTextSize={14}
-            labelColor={colors.white}
-            borderBottomColor={colors.white}
-            inputType="email"
-            onChangeText={this.handleEmailChange}
-            showCheckmark={validEmail}
-          />
-        </View>
-        <View style={styles.nextButtonWrapper}>
+        <View style={styles.scrollViewWrapper}>
+          <ScrollView style={styles.scrollView}>
+            <Text style={styles.forgotPasswordHeading}>
+              Forgot your password?
+            </Text>
+            <Text style={styles.forgotPasswordSubHeading}>
+              Enter your email to find your account
+            </Text>
+            <InputField
+              customStyle={{ marginBottom: 30 }}
+              textColor={colors.white}
+              labelText="EMAIL_ADDRRESS"
+              labelTextSize={14}
+              labelColor={colors.white}
+              borderBottomColor={colors.white}
+              inputType="email"
+              onChangeText={this.handleEmailChange}
+              showCheckmark={validEmail}
+            />
+          </ScrollView>
           <NextArrowButton
             handleNextButton={this.gotoNextStep}
             disabled={!validEmail}
           />
-        </View>
-        <View>
-          <Notification
-            showNotification={showNotification}
-            handleCloseNotification={this.handleCloseNotification}
-            type="error:"
-            firstLine="No account exist for the requested"
-            secondLine="email address."
-          />
+          <View style={styles.notificationWrapper}>
+            <Notification
+              showNotification={showNotification}
+              handleCloseNotification={this.handleCloseNotification}
+              type="error:"
+              firstLine="No account exist for the requested"
+              secondLine="email address."
+            />
+          </View>
         </View>
         <Loader modalVisible={loadingVisible} animationType="fade" />
       </View>
@@ -109,11 +109,15 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex"
   },
-  form: {
-    marginTop: 90,
-    paddingLeft: 20,
-    paddingRight: 20,
-    flex: 1
+  scrollViewWrapper: {
+    flex: 1,
+    marginTop: 70
+  },
+  scrollView: {
+    flex: 1,
+    paddingLeft: 30,
+    paddingRight: 30,
+    paddingTop: 20
   },
   forgotPasswordHeading: {
     fontSize: 28,
@@ -127,9 +131,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 60
   },
-  nextButtonWrapper: {
-    alignItems: "flex-end",
-    right: 20,
-    bottom: 20
+  notificationWrapper: {
+    position: "absolute",
+    bottom: 0,
+    zIndex: 999
   }
 });

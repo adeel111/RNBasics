@@ -109,12 +109,10 @@ export default class Login extends Component {
             />
           </ScrollView>
         </View>
-        <View style={styles.nextButton}>
-          <NextArrowButton
-            handleNextButton={this.handleNextButton}
-            disabled={this.toggleNextButtonState()}
-          />
-        </View>
+        <NextArrowButton
+          handleNextButton={this.handleNextButton}
+          disabled={this.toggleNextButtonState()}
+        />
         <View
           style={[
             styles.notificationWrapper,
