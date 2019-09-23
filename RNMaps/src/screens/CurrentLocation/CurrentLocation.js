@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { PermissionsAndroid } from "react-native";
 import { AskPermission } from "../../components/AskPermissions";
-import { TabNavigator } from "react-navigation";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 class CurrentLocation extends Component {
   state = {
-    latitude: null,
-    longitude: null,
+    latitude: 0,
+    longitude: 0,
     error: null
   };
   componentDidMount = () => {
@@ -16,8 +15,7 @@ class CurrentLocation extends Component {
 
     navigator.geolocation.getCurrentPosition(
       position => {
-        console.warn("wokeeey");
-        console.warn(position);
+        // console.warn(position);
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -33,6 +31,12 @@ class CurrentLocation extends Component {
     return (
       <MapView
         style={{ flex: 1 }}
+        mapType="satellite" // To change the type of Map
+        zoomEnabled={true}
+        provider={PROVIDER_GOOGLE}
+        loadingEnabled={true}
+        loadingIndicatorColor="#606060"
+        loadingBackgroundColor="#FFFFFF"
         initialRegion={{
           latitude: this.state.latitude,
           longitude: this.state.longitude,
