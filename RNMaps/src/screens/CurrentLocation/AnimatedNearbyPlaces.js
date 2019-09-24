@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { PermissionsAndroid } from "react-native";
+import { PermissionsAndroid, View, Text } from "react-native";
 import { AskPermission } from "../../components/AskPermissions";
-import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 
-class AnimatedCurrentLocation extends Component {
+class AnimatedNearbyPlaces extends Component {
   state = {
     region: {
       latitude: 32.082466,
@@ -11,7 +11,8 @@ class AnimatedCurrentLocation extends Component {
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421
     },
-    error: ""
+    error: "",
+    places: null
   };
 
   //   getLocation Permission and call getCurrentLocation method
@@ -35,6 +36,7 @@ class AnimatedCurrentLocation extends Component {
           initialRegion: region,
           region: region
         });
+        this.getPlaces();
       },
       error => console.log(error),
       {
@@ -43,6 +45,53 @@ class AnimatedCurrentLocation extends Component {
       }
     );
   };
+
+  //   call getUrlWithParameters with Params to found desired nearby locations...
+  getPlaces() {
+    const url = this.getUrlWithParameters(
+      this.state.region.latitude,
+      this.state.region.longitude,
+      1500,
+      "mosque",
+      "AIzaSyCfWU8n-iWvIuwM5rhyodMPD3RhFdcCdm0"
+    );
+    fetch(url)
+      .then(data => data.json())
+      .then(res => {
+        // console.warn(res);
+        const arrayMarkers = [];
+        res.results.map((element, index) => {
+          arrayMarkers.push(
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: element.geometry.location.lat,
+                longitude: element.geometry.location.lng
+              }}
+            >
+              <Callout>
+                <View>
+                  <Text>{element.name}</Text>
+                  {/* <Text>
+                      Open: {element.opening_hours.open_now} ? "YES" : "NO"
+                    </Text> */}
+                </View>
+              </Callout>
+            </Marker>
+          );
+        });
+        this.setState({ places: arrayMarkers });
+      });
+  }
+
+  //   url to find nearby places
+  getUrlWithParameters(lat, long, radius, type, API) {
+    const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+    const location = `location=${lat},${long}&radius=${radius}`;
+    const typeData = `&types=${type}`;
+    const key = `&key=${API}`;
+    return `${url}${location}${typeData}${key}`;
+  }
 
   //   animate to current user Location
   goToInitialLocation = () => {
@@ -76,9 +125,10 @@ class AnimatedCurrentLocation extends Component {
           title={"Sargodha"}
           description="City of Eagles."
         ></Marker>
+        {this.state.places}
       </MapView>
     );
   }
 }
 
-export default AnimatedCurrentLocation;
+export default AnimatedNearbyPlaces;

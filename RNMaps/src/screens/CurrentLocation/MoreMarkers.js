@@ -7,15 +7,22 @@ class MoreMarkers extends Component {
       {
         title: "Hello One",
         coordinates: {
-          latitude: 38.685516,
-          longitude: -101.073324
+          latitude: 0,
+          longitude: 0
         }
       },
       {
         title: "Hello Two",
         coordinates: {
-          latitude: 38.685519,
-          longitude: -101.073329
+          latitude: 0,
+          longitude: 5
+        }
+      },
+      {
+        title: "Hello Three",
+        coordinates: {
+          latitude: 0,
+          longitude: 10
         }
       }
     ]

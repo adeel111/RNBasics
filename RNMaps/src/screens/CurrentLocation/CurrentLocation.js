@@ -10,7 +10,7 @@ class CurrentLocation extends Component {
     error: null
   };
   componentDidMount = () => {
-    const permission = PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION;
+    const permission = PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION;
     AskPermission(permission);
 
     navigator.geolocation.getCurrentPosition(
@@ -23,7 +23,10 @@ class CurrentLocation extends Component {
         });
       },
       error => this.setState({ error: error.message }),
-      { enableHighAccuracy: false, timeout: 200000 }
+      {
+        enableHighAccuracy: true,
+        timeout: 2000
+      }
     );
   };
 

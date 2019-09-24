@@ -11,9 +11,9 @@ export const AskPermission = async permission => {
       buttonPositive: "OK"
     });
     if (granted === true || granted === PermissionsAndroid.RESULTS.GRANTED) {
-      //   alert("Permission Granted");
+      // console.warn("Permission Granted");
     } else {
-      //   alert("Permission Denied");
+      // console.warn("Permission Denied");
     }
   } catch (err) {
     console.warn(err);
