@@ -31,6 +31,14 @@ class Home extends Component {
       {
         screen: "TrackCurrentAndNearbyPlaces",
         btnText: "Track Current User & \n Show Nearby Places"
+      },
+      {
+        screen: "SourceToDestinationDirection",
+        btnText: "Draw Polyline from \n Source To Destination"
+      },
+      {
+        screen: "SourceToDestinationTracking",
+        btnText: "Origin to Destination \n Tracking with Direction"
       }
     ]
   };
@@ -68,21 +76,22 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: "#263238"
   },
   buttonContainerStyle: {
-    width: "70%",
-    paddingTop: 12.5,
-    paddingBottom: 12.5,
-    borderRadius: 10,
+    width: "80%",
+    paddingTop: 11,
+    paddingBottom: 11,
+    borderRadius: 5,
     margin: 10,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FF6600"
+    backgroundColor: "#90A4AE"
   },
   buttonTextStyle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "white"
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#263238"
   }
 });

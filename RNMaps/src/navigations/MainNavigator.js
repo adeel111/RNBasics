@@ -9,6 +9,8 @@ import MoreMarkers from "../screens/CurrentLocation/MoreMarkers";
 import NearbyPlaces from "../screens/CurrentLocation/NearbyPlaces";
 import AnimatedNearbyPlaces from "../screens/CurrentLocation/AnimatedNearbyPlaces";
 import TrackCurrentAndNearbyPlaces from "../screens/CurrentLocation/TrackCurrentAndNearbyPlaces";
+import SourceToDestinationDirection from "../screens/CurrentLocation/SourceToDestinationDirection";
+import SourceToDestinationTracking from "../screens/CurrentLocation/SourceToDestinationTracking";
 
 const HomeNavigator = createStackNavigator(
   {
@@ -19,7 +21,9 @@ const HomeNavigator = createStackNavigator(
     MoreMarkers: MoreMarkers,
     NearbyPlaces: NearbyPlaces,
     AnimatedNearbyPlaces: AnimatedNearbyPlaces,
-    TrackCurrentAndNearbyPlaces: TrackCurrentAndNearbyPlaces
+    TrackCurrentAndNearbyPlaces: TrackCurrentAndNearbyPlaces,
+    SourceToDestinationDirection: SourceToDestinationDirection,
+    SourceToDestinationTracking: SourceToDestinationTracking
   },
   {
     initialRouteName: "Home",

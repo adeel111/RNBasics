@@ -8,15 +8,22 @@ import {
 } from "react-native";
 import { AskPermission } from "../../components/AskPermissions";
 import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
 import haversine from "haversine";
 
-class TrackCurrentUser extends Component {
+class SourceToDestinationTracking extends Component {
   state = {
     region: {
       latitude: 32.082466,
       longitude: 72.669128,
-      latitudeDelta: 0.0922, // must give some valid value
-      longitudeDelta: 0.0421 // must give some valid value
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421
+    },
+    destination: {
+      destinationLatitude: 32.082491,
+      destinationLongitude: 72.669151,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421
     },
     error: "",
     routeCoordinates: [],
@@ -24,14 +31,14 @@ class TrackCurrentUser extends Component {
     prevLatLng: {} // contain pass lat and lang value
   };
 
-  // call getCurrentLocation method
+  //   getLocation Permission and call getCurrentLocation method
   componentDidMount() {
-    const permission = PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION;
+    const permission = PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION;
     AskPermission(permission);
     this.getCurrentLocation();
   }
 
-  //   getting Location Permission the current Location of a user...
+  //   getting the current Location of a user...
   getCurrentLocation = () => {
     navigator.geolocation.watchPosition(
       position => {
@@ -45,7 +52,6 @@ class TrackCurrentUser extends Component {
           latitudeDelta: 5,
           longitudeDelta: 5
         };
-
         this.setState({
           initialRegion: region,
           region: region,
@@ -59,7 +65,6 @@ class TrackCurrentUser extends Component {
       {
         enableHighAccuracy: true,
         timeout: 2000,
-        // maximumAge: 1000000,
         distanceFilter: 1
       }
     );
@@ -79,6 +84,11 @@ class TrackCurrentUser extends Component {
     longitude: this.state.region.longitude
   });
 
+  getDestinationRegion = () => ({
+    latitude: this.state.destination.destinationLatitude,
+    longitude: this.state.destination.destinationLongitude
+  });
+
   //   calculate the total distance
   calcDistance = newLatLng => {
     // console.warn("Method Called");
@@ -91,7 +101,9 @@ class TrackCurrentUser extends Component {
       <View style={{ flex: 1 }}>
         <MapView
           style={{ flex: 0.9 }}
+          style={{ flex: 1 }}
           provider={PROVIDER_GOOGLE}
+          //   mapType="satellite"
           region={this.state.mapRegion}
           followUserLocation={true}
           ref={ref => (this.mapView = ref)}
@@ -100,13 +112,30 @@ class TrackCurrentUser extends Component {
           onMapReady={this.goToInitialLocation}
           initialRegion={this.state.initialRegion}
         >
-          <Polyline coordinates={this.state.routeCoordinates} strokeWidth={5} />
-          <Marker coordinate={this.getMapRegion()} title={"Current Location"}>
-            <Image
+          {/* <Polyline coordinates={this.state.routeCoordinates} strokeWidth={5} /> */}
+          <Marker
+            pinColor={"green"}
+            coordinate={this.getMapRegion()}
+            title={"Origin"}
+          >
+            {/* <Image
               source={require("../../images/car.png")}
-              style={{ height: 35, width: 35 }}
-            />
+              style={{ height: 30, width: 30 }}
+            /> */}
           </Marker>
+
+          <Marker
+            pinColor={"blue"}
+            coordinate={this.getDestinationRegion()}
+            title={"Destination"}
+          />
+          <MapViewDirections
+            origin={this.getMapRegion()}
+            destination={this.getDestinationRegion()}
+            apikey={"AIzaSyCfWU8n-iWvIuwM5rhyodMPD3RhFdcCdm0"}
+            strokeWidth={3}
+            strokeColor="red"
+          />
         </MapView>
         <View style={styles.distanceContainer}>
           <Text>{parseFloat(this.state.distanceTravelled).toFixed(2)} km</Text>
@@ -116,7 +145,7 @@ class TrackCurrentUser extends Component {
   }
 }
 
-export default TrackCurrentUser;
+export default SourceToDestinationTracking;
 
 const styles = StyleSheet.create({
   distanceContainer: {

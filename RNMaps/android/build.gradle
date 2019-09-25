@@ -7,6 +7,8 @@ buildscript {
         compileSdkVersion = 28
         targetSdkVersion = 28
         supportLibVersion = "28.0.0"
+        googlePlayServicesVersion = "15.0.0" // Make Sure This line is added over here only
+        androidMapsUtilsVersion = "0.5+"
     }
     repositories {
         google()
@@ -14,7 +16,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.4.0")
-        classpath("com.google.gms:google-services:4.3.2")
+        classpath("com.google.gms:google-services:4.3.2") // Make Sure This line is added over here only
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -29,6 +31,10 @@ allprojects {
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
+        }
+        maven {
+            url 'https://maven.google.com/' // Make Sure This block is added over here only
+            name 'Google'
         }
     }
 }
