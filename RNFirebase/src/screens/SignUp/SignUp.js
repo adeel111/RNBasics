@@ -1,10 +1,13 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { StatusBar, View, Text, TouchableOpacity, Image } from "react-native";
+import DocumentPicker from "react-native-document-picker";
 import styles from "./styles";
 import InputField from "../../components/InputField";
 
 class SignUp extends Component {
   state = {
+    image: null,
+    gotImage: false,
     name: "",
     email: "",
     number: "",
@@ -76,7 +79,24 @@ class SignUp extends Component {
 
   //handle password text input change
   handlePasswordChange = password => {
-    this.setState({ password });
+    this.setState({ password: password });
+  };
+
+  getImage = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images]
+      });
+      this.setState({ image: res.uri, gotImage: true }, () => {
+        // console.warn(this.state.image, this.state.gotImage);
+      });
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
   };
 
   replaceScreen = screen => {
@@ -85,12 +105,26 @@ class SignUp extends Component {
   };
 
   render() {
+    const { image } = this.state;
     return (
       <View style={styles.mainContainer}>
-        <Image
+        <StatusBar backgroundColor={"#455A64"} />
+        <TouchableOpacity
           style={styles.imageStyle}
-          source={require("../../images/placeholder.png")}
-        />
+          activeOpacity={0.7}
+          onPress={() => {
+            this.getImage();
+          }}
+        >
+          {this.state.gotImage ? (
+            <Image style={styles.imageStyle} source={{ uri: image }} />
+          ) : (
+            <Image
+              style={styles.imageStyle}
+              source={require("../../images/placeholder.png")}
+            />
+          )}
+        </TouchableOpacity>
         {this.state.textInputData.map((item, index) => {
           return (
             <View key={index} style={styles.inputViewContainer}>
@@ -108,6 +142,7 @@ class SignUp extends Component {
 
         <TouchableOpacity
           style={styles.buttonContainerStyle}
+          activeOpacity={0.7}
           onPress={() => {
             this.replaceScreen("SignIn");
           }}
@@ -117,6 +152,7 @@ class SignUp extends Component {
         <View style={styles.bottomContainer}>
           <Text>Already have an account? </Text>
           <TouchableOpacity
+            activeOpacity={0.7}
             onPress={() => {
               this.replaceScreen("SignIn");
             }}

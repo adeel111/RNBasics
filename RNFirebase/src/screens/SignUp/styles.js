@@ -19,7 +19,7 @@ export default styles = StyleSheet.create({
     paddingLeft: 10,
     alignSelf: "center",
     width: "80%",
-    backgroundColor: "#E0E0E0"
+    backgroundColor: "#CFD8DC"
   },
   buttonContainerStyle: {
     width: "80%",

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { StatusBar, View, Text, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import InputField from "../../components/InputField";
 
@@ -45,6 +45,7 @@ class SignIn extends Component {
   render() {
     return (
       <View style={styles.mainContainer}>
+        <StatusBar backgroundColor={"#455A64"} />
         {this.state.textInputData.map((item, index) => {
           return (
             <View key={index} style={styles.inputViewContainer}>
@@ -62,6 +63,7 @@ class SignIn extends Component {
 
         <TouchableOpacity
           style={styles.buttonContainerStyle}
+          activeOpacity={0.7}
           onPress={() => {
             this.replaceScreen("HomeNavigation");
           }}
@@ -72,6 +74,7 @@ class SignIn extends Component {
         <View style={styles.bottomContainer}>
           <Text>Don't have an account? </Text>
           <TouchableOpacity
+            activeOpacity={0.7}
             onPress={() => {
               this.replaceScreen("SignUp");
             }}
