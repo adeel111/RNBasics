@@ -18,15 +18,22 @@ class AllUsers extends Component {
       backgroundColor: "#607D8B"
     },
     headerRight: (
-      <Image
-        source={require("../../images/logout_icon.png")}
-        style={{
-          marginRight: 15,
-          width: 30,
-          height: 30,
-          tintColor: "white"
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => {
+          // this.logout();
         }}
-      />
+      >
+        <Image
+          source={require("../../images/logout_icon.png")}
+          style={{
+            marginRight: 15,
+            width: 30,
+            height: 30,
+            tintColor: "white"
+          }}
+        />
+      </TouchableOpacity>
     )
   });
 
@@ -129,7 +136,7 @@ class AllUsers extends Component {
                 ]}
                 activeOpacity={0.7}
                 onPress={() => {
-                  // this.replaceScreen("SignIn");
+                  // this.updateUserData();
                 }}
               >
                 <Text style={styles.buttonTextStyle}>Update</Text>
@@ -143,7 +150,7 @@ class AllUsers extends Component {
                 ]}
                 activeOpacity={0.7}
                 onPress={() => {
-                  // this.replaceScreen("SignIn");
+                  // this.deleteUser();
                 }}
               >
                 <Text style={styles.buttonTextStyle}>Delete</Text>
@@ -159,7 +166,6 @@ class AllUsers extends Component {
     return (
       <View style={styles.appContainer}>
         <StatusBar backgroundColor={"#455A64"} />
-
         <FlatList
           data={this.state.usersData}
           keyExtractor={(item, index) => item.id.toString()}

@@ -46,7 +46,7 @@ InputField.propTypes = {
   multiline: PropTypes.bool,
   autoCorrect: PropTypes.bool,
   autoFocus: PropTypes.bool,
-  onChangeText: PropTypes.func
+  onChangeText: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({
