@@ -11,10 +11,10 @@ class SignIn extends Component {
       {
         inputType: "email",
         placeholder: "Enter Email",
-        multiline: false,
+        multiline: true,
         autoCorrect: false,
         autoFocus: true,
-        onChangeText: this.handleEmailChange
+        onChangeText: text => this.handleEmailChange(text)
       },
       {
         inputType: "password",
@@ -22,19 +22,23 @@ class SignIn extends Component {
         multiline: false,
         autoCorrect: false,
         autoFocus: false,
-        onChangeText: this.handlePasswordChange
+        onChangeText: text => this.handlePasswordChange(text)
       }
     ]
   };
 
   //handle email text input change
   handleEmailChange = email => {
-    this.setState({ email: email });
+    this.setState({ email: email }, () => {
+      // console.warn(this.state.email);
+    });
   };
 
   //handle password text input change
   handlePasswordChange = password => {
-    this.setState({ password: password });
+    this.setState({ password: password }, () => {
+      // console.warn(this.state.password);
+    });
   };
 
   replaceScreen = screen => {

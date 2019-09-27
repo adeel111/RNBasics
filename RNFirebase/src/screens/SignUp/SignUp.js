@@ -9,7 +9,9 @@ import {
 } from "react-native";
 import DocumentPicker from "react-native-document-picker";
 import RNFetchBlob from "react-native-fetch-blob";
+import uuid from "react-native-uuid";
 import styles from "./styles";
+import Loading from "../../components/Loading";
 import InputField from "../../components/InputField";
 import firebaseService from "../../services/firebase";
 
@@ -29,6 +31,7 @@ class SignUp extends Component {
     number: "",
     address: "",
     password: "",
+    loading: false,
     textInputData: [
       {
         inputType: "text",
@@ -36,9 +39,7 @@ class SignUp extends Component {
         multiline: false,
         autoCorrect: false,
         autoFocus: true,
-        onChangeText: () => {
-          this.handleNameChange;
-        }
+        onChangeText: text => this.handleNameChange(text)
       },
       {
         inputType: "email",
@@ -46,7 +47,7 @@ class SignUp extends Component {
         multiline: false,
         autoCorrect: false,
         autoFocus: false,
-        onChangeText: this.handleEmailChange
+        onChangeText: text => this.handleEmailChange(text)
       },
       {
         inputType: "text",
@@ -54,7 +55,7 @@ class SignUp extends Component {
         multiline: false,
         autoCorrect: false,
         autoFocus: false,
-        onChangeText: this.handleNumberChange
+        onChangeText: text => this.handleNumberChange(text)
       },
       {
         inputType: "text",
@@ -62,7 +63,7 @@ class SignUp extends Component {
         multiline: false,
         autoCorrect: false,
         autoFocus: false,
-        onChangeText: this.handleAddressChange
+        onChangeText: text => this.handleAddressChange(text)
       },
       {
         inputType: "password",
@@ -70,40 +71,34 @@ class SignUp extends Component {
         multiline: false,
         autoCorrect: false,
         autoFocus: false,
-        onChangeText: this.handlePasswordChange
+        onChangeText: text => this.handlePasswordChange(text)
       }
     ]
   };
 
   //handle name text input change
   handleNameChange = name => {
-    // console.warn("method called");
     this.setState({ name: name });
-    // console.warn(name);
   };
 
   //handle email text input change
   handleEmailChange = email => {
     this.setState({ email: email });
-    console.warn(email);
   };
 
   //handle phoneNumber text input change
   handleNumberChange = number => {
     this.setState({ number: number });
-    console.warn(number);
   };
 
   //handle address text input change
   handleAddressChange = address => {
     this.setState({ address: address });
-    console.warn(address);
   };
 
   //handle password text input change
   handlePasswordChange = password => {
     this.setState({ password: password });
-    console.warn(password);
   };
 
   // get Image from gallery
@@ -125,35 +120,32 @@ class SignUp extends Component {
   };
 
   // User signUp method
-  signUp = (comingEmail, comingPassword) => {
-    const { image } = this.state;
-    this.uploadImage(image);
-    // let validation = this.validateData();
-    // if (validation == true) {
-    const { name, email, number, address, password } = this.state;
-    //   console.warn("Data is Valid");
-    firebaseService
-      .auth()
-      .createUserWithEmailAndPassword(comingEmail, comingPassword)
-      .then(() => {
-        console.warn("User SignUp Successfully");
-        this.saveUserToDB(name, email, number, address, password);
-      })
-      .catch(error => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        alert(errorMessage);
-        console.warn("ERROR => ", errorCode, errorMessage);
-      });
-    // } else {
-    //   console.warn("Data is not Valid");
-    // }
+  signUp = () => {
+    const { image, email, password } = this.state;
+    let validation = this.validateData();
+    if (validation == true) {
+      this.toggleLoading();
+      firebaseService
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          // console.warn("User SignUp Successfully");
+          this.uploadImage(image);
+        })
+        .catch(error => {
+          this.toggleLoading();
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          alert(errorMessage);
+          // console.warn("ERROR => ", errorCode, errorMessage);
+        });
+    }
   };
 
   // validate User's Register Data...
   validateData = () => {
     const { gotImage, name, email, number, address, password } = this.state;
-    console.warn(gotImage, name, email, number, address, password);
+    // console.warn(gotImage, name, email, number, address, password);
     if (gotImage != true) {
       console.warn("Please get an image");
       return false;
@@ -163,8 +155,7 @@ class SignUp extends Component {
         email == "" ||
         number == "" ||
         address == "" ||
-        password ||
-        ""
+        password == ""
       ) {
         console.warn("Please fill all fields");
         return false;
@@ -174,8 +165,7 @@ class SignUp extends Component {
     }
   };
 
-  // First Upload image and download Image URI...
-
+  // First Upload image and download Image URI then call saveUserToDB()...
   uploadImage(uri, mime = "image/jpeg") {
     return new Promise((resolve, reject) => {
       const uploadUri =
@@ -185,7 +175,7 @@ class SignUp extends Component {
       const imageRef = firebaseService
         .storage()
         .ref("images")
-        .child("image_001");
+        .child(uuid.v4());
 
       fs.readFile(uploadUri, "base64")
         .then(data => {
@@ -197,47 +187,66 @@ class SignUp extends Component {
         })
         .then(() => {
           uploadBlob.close();
-          this.setState({ imageURI: imageRef.getDownloadURL() });
-          console.warn("Image URI (Method) ==> ", imageRef.getDownloadURL());
-          return imageRef.getDownloadURL();
+
+          const downnloadImageURI = imageRef.getDownloadURL().then(url => {
+            this.setState(
+              {
+                imageURI: url
+              },
+              () => {
+                // console.warn("ImageURI ==> ", this.state.imageURI);
+                this.saveUserToDB();
+              }
+            );
+          });
+          return downnloadImageURI;
         })
         .then(url => {
           resolve(url);
         })
         .catch(error => {
+          this.toggleLoading();
           reject(error);
         });
     });
   }
 
   // save User's SignUp info...
-  saveUserToDB = (name, email, number, address, password) => {
+  saveUserToDB = () => {
+    const { name, email, number, address, password } = this.state;
     const currentUserId = firebaseService.auth().currentUser.uid;
     // console.warn("saveUserToDB User Id", currentUserId);
 
     if (currentUserId != null) {
-      console.warn("Image URI ==> ", this.state.imageURI);
       firebaseService
         .database()
         .ref("RegisteredUsers")
         .child(currentUserId)
         .set({
           image: this.state.imageURI,
-          name: "name",
-          email: "email",
-          number: "number",
-          address: "address",
-          password: "password"
+          name: name,
+          email: email,
+          number: number,
+          address: address,
+          password: password
         })
         .then(() => {
-          console.warn("Data Entered Successfully");
+          this.toggleLoading();
+          console.warn("User Registered Successfully");
+          this.replaceScreen("SignIn");
         })
         .catch(error => {
+          this.toggleLoading();
           console.warn("Error => ", error);
         });
     }
   };
 
+  // toggle loading to show or hide progress model...
+  toggleLoading = () => {
+    this.setState({ loading: !this.state.loading });
+  };
+  // navigate to the asked screen...
   replaceScreen = screen => {
     const { navigate } = this.props.navigation;
     navigate(screen);
@@ -245,7 +254,9 @@ class SignUp extends Component {
 
   render() {
     const { image } = this.state;
-    return (
+    return this.state.loading ? (
+      <Loading text="SignUp in Progress" />
+    ) : (
       <View style={styles.mainContainer}>
         <StatusBar backgroundColor={"#455A64"} />
         <TouchableOpacity
@@ -273,7 +284,7 @@ class SignUp extends Component {
                 multiline={item.multiline}
                 autoCorrect={item.autoCorrect}
                 autoFocus={item.autoFocus}
-                onChangeText={() => item.onChangeText}
+                onChangeText={item.onChangeText}
               />
             </View>
           );
@@ -283,7 +294,7 @@ class SignUp extends Component {
           style={styles.buttonContainerStyle}
           activeOpacity={0.7}
           onPress={() => {
-            this.signUp("aydil67@gmail.com", "qwerty");
+            this.signUp();
           }}
         >
           <Text style={styles.buttonTextStyle}>SignUp</Text>
@@ -303,4 +314,5 @@ class SignUp extends Component {
     );
   }
 }
+
 export default SignUp;
