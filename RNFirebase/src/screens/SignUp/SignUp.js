@@ -215,7 +215,7 @@ class SignUp extends Component {
   saveUserToDB = () => {
     const { name, email, number, address, password } = this.state;
     const currentUserId = firebaseService.auth().currentUser.uid;
-    // console.warn("saveUserToDB User Id", currentUserId);
+    console.warn("saveUserToDB User Id", currentUserId);
 
     if (currentUserId != null) {
       firebaseService
@@ -246,6 +246,7 @@ class SignUp extends Component {
   toggleLoading = () => {
     this.setState({ loading: !this.state.loading });
   };
+  
   // navigate to the asked screen...
   replaceScreen = screen => {
     const { navigate } = this.props.navigation;

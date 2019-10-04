@@ -7,9 +7,6 @@ export default styles = StyleSheet.create({
   },
   flatListContainer: {
     flex: 1,
-    // marginBottom: 10,
-    // marginLeft: 10,
-    // marginRight: 10
   },
   cardContainer: {
     elevation: 2,
@@ -25,7 +22,7 @@ export default styles = StyleSheet.create({
     flexDirection: "row"
   },
   leftContentContainer: {
-    flex: 0.25,
+    flex: 0.22,
     justifyContent: "center"
   },
   imageStyle: {
@@ -35,7 +32,7 @@ export default styles = StyleSheet.create({
     alignSelf: "center"
   },
   centerContentContainer: {
-    flex: 0.5,
+    flex: 0.6,
     justifyContent: "center"
   },
   nameTextStyle: {
@@ -51,7 +48,7 @@ export default styles = StyleSheet.create({
     // fontWeight: "500"
   },
   rightContentContainer: {
-    flex: 0.25
+    flex: 0.20
   },
   buttonContainerStyle: {
     paddingTop: 5,
