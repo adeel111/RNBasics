@@ -171,7 +171,7 @@ class Home extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.buttonsViewContainer}>
-                               <TouchableOpacity
+          <TouchableOpacity
             style={styles.buttonStyle}
             onPress={() => this.rotateAnim()}>
             <Text style={styles.buttonTextStyle}>Rotate and Interpolate</Text>
