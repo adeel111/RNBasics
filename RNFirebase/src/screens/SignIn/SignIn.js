@@ -38,7 +38,7 @@ class SignIn extends Component {
         this.replaceScreen("AllUsers");
       } else {
         this.toggleLoading(); // stop
-        console.warn("user not logged in");
+        // console.warn("user not logged in");
       }
     });
   };
