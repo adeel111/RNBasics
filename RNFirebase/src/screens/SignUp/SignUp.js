@@ -246,7 +246,7 @@ class SignUp extends Component {
   toggleLoading = () => {
     this.setState({ loading: !this.state.loading });
   };
-  
+
   // navigate to the asked screen...
   replaceScreen = screen => {
     const { navigate } = this.props.navigation;
